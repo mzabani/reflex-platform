@@ -19,6 +19,17 @@
 let iosSupport = system == "x86_64-darwin";
     androidSupport = lib.elem system [ "x86_64-linux" ];
 
+    # Avoid needing a C compiler for GHCJS's shell
+    opensshOverlay = self: super: {
+      # When entering the ghcjs shell, git requires openssh, which if with FIDO enabled, requires libfido2, which requires systemd,
+      # which requires python3Packages.lxml, which requires python3.7-Cython, which complains with:
+      # while evaluating the attribute 'configureFlags' of the derivation 'js-unknown-ghcjs-gdb-8.3.1' at /nix/store/1q41mjncrlsds9nxwr2xrl6lb9g48man-source/pkgs/development/tools/misc/gdb/default.nix:27:3:
+      # while evaluating the attribute 'stdenv.cc.cc.lib' at /nix/store/1q41mjncrlsds9nxwr2xrl6lb9g48man-source/pkgs/stdenv/generic/default.nix:156:14:
+      # no C compiler provided for this platform
+
+      openssh = super.openssh.override (oldArgs: { withFIDO = false; });
+    };
+
     # Overlay for GHC with -load-splices & -save-splices option
     splicesEval = self: super: {
       haskell = super.haskell // {
@@ -90,6 +101,7 @@ let iosSupport = system == "x86_64-darwin";
     nixpkgsArgs = {
       inherit system;
       overlays = [
+        opensshOverlay
         hackGetOverlay
         bindHaskellOverlays
         forceStaticLibs

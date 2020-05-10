@@ -130,7 +130,7 @@ in
   # another broken test
   # phantomjs has issues with finding the right port
   # jsaddle-warp = dontCheck (addTestToolDepend (self.callCabal2nix "jsaddle-warp" "${jsaddleSrc}/jsaddle-warp" {}));
-  jsaddle-warp = dontCheck (self.callCabal2nix "jsaddle-warp" (jsaddleSrc + /jsaddle-warp) {});
+  jsaddle-warp = doJailbreak (dontCheck (self.callCabal2nix "jsaddle-warp" (jsaddleSrc + /jsaddle-warp) {}));
 
   jsaddle-dom = self.callCabal2nix "jsaddle-dom" self._dep.jsaddle-dom {};
   jsaddle-wasm = self.callCabal2nix "jsaddle-wasm" (hackGet (wasmCross + /jsaddle-wasm)) {};

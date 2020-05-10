@@ -3,7 +3,7 @@
 self: super: {
   th-expand-syns = haskellLib.doJailbreak super.th-expand-syns;
   ChasingBottoms = haskellLib.doJailbreak super.ChasingBottoms;
-  base-orphans = haskellLib.dontCheck super.base-orphans;
+  # base-orphans = haskellLib.dontCheck super.base-orphans;
   bifunctors = haskellLib.doJailbreak (haskellLib.dontCheck super.bifunctors);
   HTTP = haskellLib.doJailbreak super.HTTP;
   newtype-generics = haskellLib.doJailbreak super.newtype-generics;
@@ -44,5 +44,4 @@ self: super: {
   });
 
   entropy = self.callHackage "entropy" "0.4.1.4" {};
-
 }

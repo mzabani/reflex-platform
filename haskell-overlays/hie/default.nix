@@ -11,14 +11,15 @@ let
   ghcProjectTypesSrc = ghcModSrc + "/ghc-project-types";
   ghcModCoreSrc  = ghcModSrc + "/core";
   HaReSrc = hieSrc + "/submodules/HaRe";
-  cabalHelperSrc = hieSrc + "/submodules/cabal-helper";
+  # cabalHelperSrc = hieSrc + "/submodules/cabal-helper";
 in self: super: {
   _dep = super._dep or {} // localDeps;
   constrained-dynamic = doJailbreak super.constrained-dynamic;
   monad-dijkstra = dontCheck (self.callHackage "monad-dijkstra" "0.1.1.2" {}); # This package fails its own hlint test
   floskell = doJailbreak (dontCheck (self.callHackage "floskell" "0.10.1" {}));
   ghc-exactprint = if nixpkgs.stdenv.isDarwin then dontCheck super.ghc-exactprint else super.ghc-exactprint;
-  cabal-helper = doJailbreak (self.callCabal2nix "cabal-helper" cabalHelperSrc {});
+  cabal-helper = markUnbroken super.cabal-helper;
+  # cabal-helper = doJailbreak (self.callCabal2nix "cabal-helper" cabalHelperSrc {});
   ghc-mod = dontCheck (doJailbreak (self.callCabal2nix "ghc-mod" ghcModSrc {}));
   ghc-mod-core = doJailbreak (self.callCabal2nix "ghc-mod-core" ghcModCoreSrc {});
   ghc-project-types = doJailbreak (self.callCabal2nix "ghc-project-types" ghcProjectTypesSrc {});
