@@ -42,7 +42,7 @@ import           Control.Applicative
 import           Data.Monoid             ((<>))
 import qualified Data.Set                as Set
 import qualified Data.Text.Encoding      as E
-import           Data.CaseInsensitive    (mk, original, CI)
+import           Data.CaseInsensitive    (mk, CI, original)
 import           Data.Functor.Identity
 import           Data.Proxy              (Proxy (..))
 import qualified Data.Map                as Map
